@@ -33,54 +33,67 @@ export default async function handler(req, res) {
 
     // Determine language instruction
     let languageInstruction = '';
+    let languageCode = 'English';
+    
     if (language && language !== 'English') {
-      languageInstruction = `IMPORTANT: Respond in ${language}. All text in the JSON (itemDescription, outfit names, vibe descriptions, tips) must be in ${language}. `;
+      languageCode = language;
+      if (language === 'Portuguese (Portugal)') {
+        languageInstruction = `YOU MUST RESPOND ENTIRELY IN EUROPEAN PORTUGUESE (pt-PT). Every single word in the JSON response must be in Portuguese from Portugal. `;
+      } else if (language === 'Portuguese (Brazil)') {
+        languageInstruction = `YOU MUST RESPOND ENTIRELY IN BRAZILIAN PORTUGUESE (pt-BR). Every single word in the JSON response must be in Brazilian Portuguese. `;
+      } else if (language === 'French') {
+        languageInstruction = `YOU MUST RESPOND ENTIRELY IN FRENCH. Every single word in the JSON response must be in French. `;
+      } else if (language === 'Italian') {
+        languageInstruction = `YOU MUST RESPOND ENTIRELY IN ITALIAN. Every single word in the JSON response must be in Italian. `;
+      } else if (language === 'German') {
+        languageInstruction = `YOU MUST RESPOND ENTIRELY IN GERMAN. Every single word in the JSON response must be in German. `;
+      }
     }
 
     // Build the prompt based on whether style/season are provided
     let promptText = languageInstruction;
     
     if (style && season) {
-      promptText += `Analyze this fashion item and provide ${style} style outfit suggestions specifically for ${season} season. Create polished, detailed outfit combinations that perfectly blend ${style} aesthetics with ${season} weather and vibe.`;
+      promptText += `Analyze this fashion item and provide ${style} style outfit suggestions specifically for ${season} season. Create polished, detailed outfit combinations that perfectly blend ${style} aesthetics with ${season} weather and vibe. `;
     } else {
-      promptText += `Analyze this fashion item and provide styling suggestions.`;
+      promptText += `Analyze this fashion item and provide styling suggestions. `;
     }
 
-    promptText += ` Return ONLY a JSON object (no markdown, no backticks) with this structure:
+    promptText += `Return ONLY a JSON object (no markdown, no backticks, no preamble). ${languageInstruction ? 'Remember: ALL TEXT MUST BE IN ' + languageCode.toUpperCase() + '. ' : ''}The JSON structure:
 {
-  "itemDescription": "brief description of the item and its color",
-  "styleCategory": "${style || 'casual/formal/sporty/elegant'}",
+  "itemDescription": "brief description in ${languageCode}",
+  "styleCategory": "${style || 'the style category'}",
   "colorPalette": ["color1", "color2", "color3"],
   "outfitSuggestions": [
     {
-      "name": "Outfit name that reflects the ${style || 'style'} ${season ? 'and ' + season : ''} vibe",
+      "name": "Outfit name in ${languageCode}",
       "items": {
-        "tops": "detailed suggestion with specific colors, fabrics, and ${season || ''} appropriate pieces",
-        "bottoms": "detailed suggestion with specific colors, styles, and ${season || ''} appropriate pieces",
-        "accessories": "detailed accessories including shoes, bags, jewelry that complement the ${style || 'style'} ${season ? 'and work for ' + season : ''}"
+        "tops": "detailed suggestion in ${languageCode} with specific colors, fabrics${season ? ', and ' + season + ' appropriate pieces' : ''}",
+        "bottoms": "detailed suggestion in ${languageCode} with specific colors and styles${season ? ' for ' + season : ''}",
+        "accessories": "detailed accessories in ${languageCode} including shoes, bags, jewelry"
       },
-      "vibe": "description of the complete look and why it works for ${style || 'this style'} ${season ? 'in ' + season : ''}"
+      "vibe": "complete description in ${languageCode} of why this look works"
     },
     {
-      "name": "Second outfit name with different approach to ${style || 'the style'} ${season ? 'for ' + season : ''}",
+      "name": "Second outfit name in ${languageCode}",
       "items": {
-        "tops": "different detailed suggestion",
-        "bottoms": "different detailed suggestion",
-        "accessories": "different accessories"
+        "tops": "different detailed suggestion in ${languageCode}",
+        "bottoms": "different detailed suggestion in ${languageCode}",
+        "accessories": "different accessories in ${languageCode}"
       },
-      "vibe": "description of this look"
+      "vibe": "description in ${languageCode}"
     },
     {
-      "name": "Third outfit - another variation",
+      "name": "Third outfit name in ${languageCode}",
       "items": {
-        "tops": "another detailed suggestion",
-        "bottoms": "another detailed suggestion",
-        "accessories": "more accessories"
+        "tops": "another detailed suggestion in ${languageCode}",
+        "bottoms": "another detailed suggestion in ${languageCode}",
+        "accessories": "more accessories in ${languageCode}"
       },
-      "vibe": "description"
+      "vibe": "description in ${languageCode}"
     }
   ],
-  "tips": ["${style || 'style'}-specific tip for ${season || 'this season'}", "tip about colors and combinations", "tip about layering or fabric choices ${season ? 'for ' + season : ''}"]
+  "tips": ["tip 1 in ${languageCode}", "tip 2 in ${languageCode}", "tip 3 in ${languageCode}"]
 }`;
 
     // Call Anthropic API
