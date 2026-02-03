@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { imageData, style, season } = req.body;
+    const { imageData, style, season, language } = req.body;
 
     if (!imageData) {
       return res.status(400).json({ error: 'No image data provided' });
@@ -31,11 +31,19 @@ export default async function handler(req, res) {
 
     console.log('API Key found, calling Anthropic...');
 
+    // Determine language instruction
+    let languageInstruction = '';
+    if (language && language !== 'English') {
+      languageInstruction = `IMPORTANT: Respond in ${language}. All text in the JSON (itemDescription, outfit names, vibe descriptions, tips) must be in ${language}. `;
+    }
+
     // Build the prompt based on whether style/season are provided
-    let promptText = `Analyze this fashion item and provide styling suggestions.`;
+    let promptText = languageInstruction;
     
     if (style && season) {
-      promptText = `Analyze this fashion item and provide ${style} style outfit suggestions specifically for ${season} season. Create polished, detailed outfit combinations that perfectly blend ${style} aesthetics with ${season} weather and vibe.`;
+      promptText += `Analyze this fashion item and provide ${style} style outfit suggestions specifically for ${season} season. Create polished, detailed outfit combinations that perfectly blend ${style} aesthetics with ${season} weather and vibe.`;
+    } else {
+      promptText += `Analyze this fashion item and provide styling suggestions.`;
     }
 
     promptText += ` Return ONLY a JSON object (no markdown, no backticks) with this structure:
