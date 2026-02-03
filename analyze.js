@@ -30,6 +30,8 @@ export default async function handler(req, res) {
     }
 
     console.log('API Key found, calling Anthropic...');
+    console.log('Language received:', language);
+    console.log('Style:', style, 'Season:', season);
 
     // Determine language instruction
     let languageInstruction = '';
@@ -37,6 +39,7 @@ export default async function handler(req, res) {
     
     if (language && language !== 'English') {
       languageCode = language;
+      console.log('Setting language to:', languageCode);
       if (language === 'Portuguese (Portugal)') {
         languageInstruction = `YOU MUST RESPOND ENTIRELY IN EUROPEAN PORTUGUESE (pt-PT). Every single word in the JSON response must be in Portuguese from Portugal. `;
       } else if (language === 'Portuguese (Brazil)') {

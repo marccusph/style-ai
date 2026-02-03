@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Style AI - Fashion Styling Assistant</title>
+    <title>stailized - Let's combine things</title>
+    <meta name="description" content="Let's combine things">
+    <meta property="og:title" content="stailized">
+    <meta property="og:description" content="Let's combine things">
+    <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#48495C',
+                        'brand-light': '#F1A779',
+                        'brand-dark-hover': '#3a3b4a',
+                        'brand-light-hover': '#e99560',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @keyframes spin {
             to { transform: rotate(360deg); }
@@ -12,9 +30,13 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+        .blur-content {
+            filter: blur(8px);
+            pointer-events: none;
+        }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+<body class="min-h-screen bg-gradient-to-br from-gray-50 via-stone-50 to-orange-50">
     <div id="app"></div>
 
     <script type="module">
@@ -39,6 +61,28 @@
             h('path', { d: "M19 17v4" }),
             h('path', { d: "M3 5h4" }),
             h('path', { d: "M17 19h4" })
+        );
+
+        // Stailized logo symbol
+        const StailizedLogo = () => h('svg', { width: 32, height: 32, viewBox: "0 0 100 100", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+            h('circle', { cx: 20, cy: 15, r: 8, fill: '#48495C' }),
+            h('circle', { cx: 35, cy: 10, r: 5, fill: '#48495C' }),
+            h('circle', { cx: 48, cy: 8, r: 3, fill: '#48495C' }),
+            h('circle', { cx: 60, cy: 10, r: 4, fill: '#48495C' }),
+            h('circle', { cx: 72, cy: 15, r: 6, fill: '#48495C' }),
+            h('circle', { cx: 82, cy: 25, r: 8, fill: '#48495C' }),
+            h('circle', { cx: 88, cy: 40, r: 5, fill: '#48495C' }),
+            h('circle', { cx: 90, cy: 55, r: 4, fill: '#48495C' }),
+            h('circle', { cx: 85, cy: 68, r: 6, fill: '#48495C' }),
+            h('circle', { cx: 75, cy: 78, r: 8, fill: '#48495C' }),
+            h('circle', { cx: 62, cy: 85, r: 5, fill: '#48495C' }),
+            h('circle', { cx: 48, cy: 88, r: 4, fill: '#48495C' }),
+            h('circle', { cx: 35, cy: 87, r: 6, fill: '#48495C' }),
+            h('circle', { cx: 22, cy: 82, r: 8, fill: '#48495C' }),
+            h('circle', { cx: 13, cy: 70, r: 6, fill: '#48495C' }),
+            h('circle', { cx: 8, cy: 55, r: 5, fill: '#48495C' }),
+            h('circle', { cx: 10, cy: 40, r: 4, fill: '#48495C' }),
+            h('circle', { cx: 15, cy: 28, r: 6, fill: '#48495C' })
         );
 
         const RefreshIcon = () => h('svg', { xmlns: "http://www.w3.org/2000/svg", width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
@@ -167,20 +211,20 @@
                 h('div', { className: "bg-white shadow-sm sticky top-0 z-10" },
                     h('div', { className: "max-w-2xl mx-auto px-4 py-4" },
                         h('div', { className: "flex items-center justify-between" },
-                            h('div', { className: "flex items-center gap-2" },
-                                h(SparklesIcon),
-                                h('h1', { className: "text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent" }, 'Style AI')
+                            h('div', { className: "flex items-center gap-3" },
+                                h(StailizedLogo),
+                                h('h1', { className: "text-2xl font-bold text-brand-dark" }, 'stailized')
                             ),
                             h('div', { className: "flex items-center gap-3" },
                                 h('div', { className: "relative" },
                                     h('select', {
                                         value: selectedLanguage,
                                         onChange: (e) => setSelectedLanguage(e.target.value),
-                                        className: "appearance-none bg-purple-50 text-purple-700 text-sm font-medium pl-8 pr-3 py-2 rounded-lg border-2 border-purple-200 focus:outline-none focus:border-purple-400 cursor-pointer"
+                                        className: "appearance-none bg-gray-100 text-brand-dark text-sm font-medium pl-8 pr-3 py-2 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-brand-light cursor-pointer"
                                     },
                                         ...languages.map(lang => h('option', { key: lang, value: lang }, lang))
                                     ),
-                                    h('div', { className: "absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none" },
+                                    h('div', { className: "absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-brand-dark" },
                                         h(GlobeIcon)
                                     )
                                 ),
@@ -214,7 +258,7 @@
                                     }),
                                     h('button', {
                                         onClick: () => cameraInputRef.current?.click(),
-                                        className: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg"
+                                        className: "w-full bg-gradient-to-r from-brand-dark to-brand-light text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg"
                                     },
                                         h(CameraIcon),
                                         'Take Photo'
@@ -228,7 +272,7 @@
                                     }),
                                     h('button', {
                                         onClick: () => fileInputRef.current?.click(),
-                                        className: "w-full bg-white border-2 border-purple-200 text-purple-600 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-purple-50 transition-all"
+                                        className: "w-full bg-white border-2 border-brand-light border-opacity-40 text-brand-dark py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-purple-50 transition-all"
                                     },
                                         h(UploadIcon),
                                         'Upload from Gallery'
@@ -249,7 +293,7 @@
                             h('button', {
                                 onClick: () => analyzeFashionItem(),
                                 disabled: loading,
-                                className: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50"
+                                className: "w-full bg-gradient-to-r from-brand-dark to-brand-light text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50"
                             },
                                 loading ? [h(LoaderIcon), 'Analyzing...'] : [h(SparklesIcon), 'Get Style Suggestions']
                             )
@@ -269,7 +313,7 @@
                                             onClick: () => setSelectedStyle(style),
                                             className: `py-3 px-4 rounded-lg font-medium transition-all ${
                                                 selectedStyle === style 
-                                                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
+                                                    ? 'bg-gradient-to-r from-brand-dark to-brand-light text-white shadow-lg' 
                                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`
                                         }, style)
@@ -283,7 +327,7 @@
                                             onClick: () => setSelectedSeason(season),
                                             className: `py-3 px-4 rounded-lg font-medium transition-all ${
                                                 selectedSeason === season 
-                                                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
+                                                    ? 'bg-gradient-to-r from-brand-dark to-brand-light text-white shadow-lg' 
                                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`
                                         }, season)
@@ -292,13 +336,13 @@
                                 h('button', {
                                     onClick: handleGenerateWithPreferences,
                                     disabled: !selectedStyle || !selectedSeason || loading,
-                                    className: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className: "w-full bg-gradient-to-r from-brand-dark to-brand-light text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                 },
                                     loading ? [h(LoaderIcon), 'Improving...'] : [h(SparklesIcon), 'Improve the Look']
                                 ),
                                 h('button', {
                                     onClick: () => setShowStyleSelector(false),
-                                    className: "w-full mt-3 bg-white border-2 border-purple-200 text-purple-600 py-3 rounded-xl font-semibold hover:bg-purple-50 transition-all"
+                                    className: "w-full mt-3 bg-white border-2 border-brand-light border-opacity-40 text-brand-dark py-3 rounded-xl font-semibold hover:bg-purple-50 transition-all"
                                 }, 'Cancel')
                             )
                         )
@@ -306,24 +350,26 @@
                         // Results
                         h('div', { className: "space-y-4" },
                             // Refined suggestion header (if applicable)
-                            isRefinedSuggestion && h('div', { className: "bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-6 text-white text-center" },
+                            isRefinedSuggestion && h('div', { className: "bg-gradient-to-r from-brand-dark to-brand-light rounded-2xl shadow-lg p-6 text-white text-center" },
                                 h('div', { className: "flex items-center justify-center gap-2 mb-2" },
                                     h(SparklesIcon),
                                     h('h2', { className: "text-2xl font-bold" }, 'Improved Look')
                                 ),
-                                h('p', { className: "text-purple-100 text-lg" },
+                                h('p', { className: "text-gray-100 text-lg" },
                                     `${selectedStyle} style for ${selectedSeason}`
                                 )
                             ),
+                            // Content wrapper with blur when loading
+                            h('div', { className: loading ? 'blur-content' : '' },
                             // Item description
                             h('div', { className: "bg-white rounded-2xl shadow-lg p-6" },
                                 h('img', { src: image, alt: "Fashion item", className: "w-full h-48 object-contain bg-gray-50 rounded-xl mb-4" }),
                                 h('h3', { className: "font-semibold text-gray-800 mb-2" }, 'Your Item:'),
                                 h('p', { className: "text-gray-600" }, suggestions.itemDescription),
                                 h('div', { className: "flex flex-wrap gap-2 mt-3" },
-                                    h('span', { className: "px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium" }, suggestions.styleCategory),
+                                    h('span', { className: "px-3 py-1 bg-brand-light bg-opacity-20 text-brand-dark rounded-full text-sm font-medium" }, suggestions.styleCategory),
                                     ...suggestions.colorPalette.map((color, idx) =>
-                                        h('span', { key: idx, className: "px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-sm font-medium" }, color)
+                                        h('span', { key: idx, className: "px-3 py-1 bg-brand-light bg-opacity-30 text-brand-dark rounded-full text-sm font-medium" }, color)
                                     )
                                 )
                             ),
@@ -334,15 +380,15 @@
                                     h('p', { className: "text-sm text-gray-600 mb-4 italic" }, outfit.vibe),
                                     h('div', { className: "space-y-3" },
                                         h('div', {},
-                                            h('h4', { className: "font-semibold text-purple-600 text-sm mb-1" }, 'Tops:'),
+                                            h('h4', { className: "font-semibold text-brand-dark text-sm mb-1" }, 'Tops:'),
                                             h('p', { className: "text-gray-700" }, outfit.items.tops)
                                         ),
                                         h('div', {},
-                                            h('h4', { className: "font-semibold text-purple-600 text-sm mb-1" }, 'Bottoms:'),
+                                            h('h4', { className: "font-semibold text-brand-dark text-sm mb-1" }, 'Bottoms:'),
                                             h('p', { className: "text-gray-700" }, outfit.items.bottoms)
                                         ),
                                         h('div', {},
-                                            h('h4', { className: "font-semibold text-purple-600 text-sm mb-1" }, 'Accessories:'),
+                                            h('h4', { className: "font-semibold text-brand-dark text-sm mb-1" }, 'Accessories:'),
                                             h('p', { className: "text-gray-700" }, outfit.items.accessories)
                                         )
                                     )
@@ -354,23 +400,32 @@
                                 h('ul', { className: "space-y-2" },
                                     ...suggestions.tips.map((tip, idx) =>
                                         h('li', { key: idx, className: "flex gap-2 text-gray-700" },
-                                            h('span', { className: "text-purple-600" }, '•'),
+                                            h('span', { className: "text-brand-dark" }, '•'),
                                             h('span', {}, tip)
                                         )
                                     )
                                 )
                             ),
+                            // Close blur wrapper
+                            ),
+                            // Loading indicator
+                            loading && h('div', { className: "flex justify-center py-8" },
+                                h('div', { className: "flex items-center gap-3 text-brand-dark" },
+                                    h(LoaderIcon),
+                                    h('span', { className: "font-semibold" }, 'Improving your look...')
+                                )
+                            ),
                             // Refresh button
-                            h('button', {
+                            !loading && h('button', {
                                 onClick: handleRefreshClick,
-                                className: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg"
+                                className: "w-full bg-gradient-to-r from-brand-dark to-brand-light text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-brand-dark-hover hover:to-brand-light-hover transition-all shadow-lg"
                             },
                                 h(RefreshIcon),
                                 'Improve the Look'
                             ),
-                            h('button', {
+                            !loading && h('button', {
                                 onClick: reset,
-                                className: "w-full bg-white border-2 border-purple-200 text-purple-600 py-4 rounded-xl font-semibold hover:bg-purple-50 transition-all"
+                                className: "w-full bg-white border-2 border-brand-dark text-brand-dark py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all"
                             }, 'Style Another Item')
                         )
                 )
